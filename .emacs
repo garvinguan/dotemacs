@@ -22,7 +22,7 @@
     fuzzy company auto-complete
 
     ;; editing utilities
-    expand-region yasnippet multiple-cursors key-chord ace-jump-mode
+    evil expand-region yasnippet multiple-cursors key-chord ace-jump-mode
 
     ;; highlighting
     idle-highlight-mode
@@ -46,7 +46,7 @@
     javap-mode emacs-eclim java-imports
 
     ;; javascript
-    tern json-mode js2-mode impatient-mode web-mode
+    tern json-mode js2-mode ac-js2 impatient-mode web-mode
 
     ;; helm
     helm helm-descbinds helm-ag helm-projectile helm-swoop
@@ -365,7 +365,7 @@ on `impatient-mode' for the current buffer."
   (key-chord-define evil-visual-state-map "jk" 'evil-change-to-previous-state)
   (key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
   (key-chord-define evil-replace-state-map "jk" 'evil-normal-state)
-;;  (setq-default evil-cross-lines t)
+  ;;  (setq-default evil-cross-lines t)
   ;; different jumps for different visual modes
   (defadvice evil-visual-line (before spc-for-line-jump activate)
     (define-key evil-motion-state-map (kbd "SPC") #'evil-ace-jump-line-mode))
@@ -381,6 +381,28 @@ on `impatient-mode' for the current buffer."
     (interactive)
     (save-buffer)
     (evil-normal-state))
+  (defun org-evil-open-below (count)
+    "Insert a new line below point and switch to Insert state.
+The insertion will be repeated COUNT times."
+    (interactive "p")
+    (evil-insert-newline-below)
+    (setq evil-insert-count count
+	  evil-insert-lines t
+	  evil-insert-vcount nil)
+    (evil-insert-state 1)
+    (add-hook 'post-command-hook #'evil-maybe-remove-spaces))
+  (defun org-evil-open-above (count)
+    "Insert a new line above point and switch to Insert state.
+The insertion will be repeated COUNT times."
+    (interactive "p")
+    (evil-insert-newline-above)
+    (setq evil-insert-count count
+	  evil-insert-lines t
+	  evil-insert-vcount nil)
+    (evil-insert-state 1)
+    (add-hook 'post-command-hook #'evil-maybe-remove-spaces))
+  (evil-define-key 'normal org-mode-map (kbd "o") 'org-evil-open-below)
+  (evil-define-key 'normal org-mode-map (kbd "O") 'org-evil-open-above)
   (key-chord-define evil-insert-state-map ";s" 'normal-state-after-save))
 
 (use-package magit
@@ -410,6 +432,7 @@ on `impatient-mode' for the current buffer."
 
   (define-key magit-mode-map (kbd "C-c C-b") #'my/magit-browse))
 
+(load-theme 'solarized-light)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -417,7 +440,7 @@ on `impatient-mode' for the current buffer."
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" default))))
+    ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" default))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

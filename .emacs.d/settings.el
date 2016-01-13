@@ -38,10 +38,6 @@
 (package-initialize)
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
-;; themes
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-(load-theme 'solarized-light t)
-
 (setq x-underline-at-descent-line t)
 ;; make the fringe stand out from the background
 (setq solarized-distinct-fringe-background t)
