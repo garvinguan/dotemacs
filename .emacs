@@ -1,4 +1,5 @@
 (load-file "~/.emacs.d/settings.el")
+(load-file "~/.emacs.d/private.el")
 
 (require 'package)
 (package-initialize)
@@ -78,12 +79,15 @@
 (require 'use-package)
 (use-package erc-log)
 (use-package diminish)
-;;(use-package uniquify)
 (use-package org
   :bind (("C-c l" . org-store-link)
 	 ("C-c a" . org-agenda)
 	 ("C-c c" . org-capture))
   :config
+  (add-hook #'org-mode-hook #'org-indent-mode)
+  (setq org-todo-keywords '((sequence "☛ TODO(t)" "|" " DONE(d)")
+			    (sequence "⚑ WAITING(w)" "|")
+			    (sequence "|" "✘ CANCELED(c)")))
   (bind-key "C-j" 'backward-char org-mode-map)
   (bind-key "M-e" 'toggle-truncate-lines org-mode-map)
   (bind-key "C-;" 'backward-delete-char org-mode-map)
@@ -96,6 +100,8 @@
 	'(("i" "importanttodo" entry (file+headline "~/org/notes.org" "Important")
 	   "* TODO  %?\n  %U\n")
 	  ("w" "websitetodo" entry (file+headline "~/org/website.org" "What to work on next")
+	   "* TODO  %?")
+	  ("n" "interesting things to find out" entry (file+headline "~/org/notes.org" "What to find out next")
 	   "* TODO  %?")
 	  ("e" "extension" entry (file+headline "~/org/extensiontodos.org" "What to work on next")
 	   "* TODO  %?")
@@ -115,6 +121,13 @@
 			       ;; "~/org/recommendations.org"
 			       "~/org/notes.org"
 			       )))
+(use-package org-bullets
+  :ensure t
+  :init
+  (setq org-bullets-bullet-list
+	'("*" "✿" "✤" "☀" "▾" "▸"))
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
 (use-package company
   :init (add-hook #'prog-mode-hook #'company-mode)
@@ -164,10 +177,11 @@
   (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
   :config
-  (bind-key "C-j" 'backward-char web-mode-map)
-  (bind-key "M-j" 'backward-word web-mode-map)
-  (bind-key "C-;" 'backward-delete-char web-mode-map)
-  (bind-key "M-;" 'backward-delete-word web-mode-map)
+  (bind-keys :map web-mode-map
+            ("C-j" . backward-char)
+            ("M-j" . backward-word)
+            ("C-;" . backward-delete-char)
+            ("M-;" . backward-delete-word))
   (use-package impatient-mode
     :config
     (defun impatient-web-mode-hook ()
@@ -214,9 +228,10 @@ on `impatient-mode' for the current buffer."
   :diminish helm-mode
   :config
   (helm-mode 1)
-  (bind-key "C-j" 'helm-next-line helm-map)
-  (bind-key "C-f" 'helm-execute-persistent-action helm-map)
-  (bind-key "C-k" 'helm-previous-line helm-map))
+  (bind-keys :map helm-map
+             ("C-j" . helm-next-line)
+             ("C-f" . helm-execute-persistent-action)
+             ("C-k" . helm-previous-line)))
 
 (use-package projectile
   :defer 5
@@ -277,7 +292,9 @@ on `impatient-mode' for the current buffer."
 (use-package erc
   :init
   (setq erc-nick "workisfun"
-	erc-hide-list '("JOIN" "PART" "QUIT")))
+	erc-hide-list '("JOIN" "PART" "QUIT"))
+  (setq erc-autojoin-channels-alist
+	'(("freenode.net" "#emacs-beginners" "#go-nuts"))))
 
 (use-package ediff
   :config
@@ -432,7 +449,7 @@ The insertion will be repeated COUNT times."
 
   (define-key magit-mode-map (kbd "C-c C-b") #'my/magit-browse))
 
-(load-theme 'solarized-light)
+(load-theme 'solarized-light t)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -440,7 +457,7 @@ The insertion will be repeated COUNT times."
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" default))))
+    ("ff0624aca83ba718da04df8e441f03a5033504904a65407bb364e6e6fde96f64" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" default))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
