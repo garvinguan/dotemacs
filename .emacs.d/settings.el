@@ -38,6 +38,9 @@
 (package-initialize)
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
+;; themes
+(load-theme 'solarized-light t)
+
 (setq x-underline-at-descent-line t)
 ;; make the fringe stand out from the background
 (setq solarized-distinct-fringe-background t)
@@ -308,6 +311,12 @@ Including indent-buffer, which should not be called automatically on save."
 
 ;; refresh contents of buffers if file changes on disk
 (global-auto-revert-mode 1)
+
+;; tern mode, needs tern installed
+;; http://ternjs.net/doc/manual.html#emacs
+(add-to-list 'load-path "D:/ProgramFiles/tern/emacs/")
+(autoload 'tern-mode "tern.el" nil t)
+(add-hook 'js2-mode-hook (lambda () (tern-mode t)))
 
 ;; japanese / english font size pairs
 (when (window-system)

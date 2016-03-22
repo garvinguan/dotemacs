@@ -47,7 +47,7 @@
     javap-mode emacs-eclim java-imports
 
     ;; javascript
-    tern json-mode js2-mode ac-js2 impatient-mode web-mode
+    tern company-tern json-mode js2-mode ac-js2 impatient-mode web-mode
 
     ;; helm
     helm helm-descbinds helm-ag helm-projectile helm-swoop
@@ -85,9 +85,6 @@
 	 ("C-c c" . org-capture))
   :config
   (add-hook #'org-mode-hook #'org-indent-mode)
-  (setq org-todo-keywords '((sequence "☛ TODO(t)" "|" " DONE(d)")
-			    (sequence "⚑ WAITING(w)" "|")
-			    (sequence "|" "✘ CANCELED(c)")))
   (bind-key "C-j" 'backward-char org-mode-map)
   (bind-key "M-e" 'toggle-truncate-lines org-mode-map)
   (bind-key "C-;" 'backward-delete-char org-mode-map)
@@ -147,6 +144,7 @@
 	     ("C-p" . company-select-previous)
 	     ("C-d" . company-show-doc-buffer)
 	     ("<tab>" . company-complete))
+  (add-to-list 'company-backends 'company-tern)
   )
 
 (use-package go-mode
@@ -294,7 +292,7 @@ on `impatient-mode' for the current buffer."
   (setq erc-nick "workisfun"
 	erc-hide-list '("JOIN" "PART" "QUIT"))
   (setq erc-autojoin-channels-alist
-	'(("freenode.net" "#emacs-beginners" "#go-nuts"))))
+	'(("freenode.net" "#emacs-beginners" "#go-nuts" "#javascript"))))
 
 (use-package ediff
   :config
