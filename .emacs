@@ -85,12 +85,7 @@
 	 ("C-c c" . org-capture))
   :config
   (add-hook #'org-mode-hook #'org-indent-mode)
-  (bind-key "C-j" 'backward-char org-mode-map)
   (bind-key "M-e" 'toggle-truncate-lines org-mode-map)
-  (bind-key "C-;" 'backward-delete-char org-mode-map)
-  (bind-key "M-;" 'backward-delete-word org-mode-map)
-  (bind-key "M-j" 'backward-word org-mode-map)
-  (bind-key "C-j" 'backward-char org-mode-map)
   (setq org-default-notes-file (concat org-directory "/notes.org"))
   (setq org-log-done t)
   (setq org-capture-templates
@@ -99,8 +94,6 @@
 	  ("w" "websitetodo" entry (file+headline "~/org/website.org" "What to work on next")
 	   "* TODO  %?")
 	  ("n" "interesting things to find out" entry (file+headline "~/org/notes.org" "What to find out next")
-	   "* TODO  %?")
-	  ("e" "extension" entry (file+headline "~/org/extensiontodos.org" "What to work on next")
 	   "* TODO  %?")
 	  ("q" "questions" entry (file+headline "~/org/notes.org" "Questions to ask")
 	   "* TODO  %?\n  %U\n  %a")
@@ -175,11 +168,6 @@
   (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
   :config
-  (bind-keys :map web-mode-map
-            ("C-j" . backward-char)
-            ("M-j" . backward-word)
-            ("C-;" . backward-delete-char)
-            ("M-;" . backward-delete-word))
   (use-package impatient-mode
     :config
     (defun impatient-web-mode-hook ()
