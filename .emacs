@@ -89,22 +89,34 @@
   (setq org-default-notes-file (concat org-directory "/notes.org"))
   (setq org-log-done t)
   (setq org-capture-templates
-	'(("i" "importanttodo" entry (file+headline "~/org/notes.org" "Important")
-	   "* TODO  %?\n  %U\n")
-	  ("w" "websitetodo" entry (file+headline "~/org/website.org" "What to work on next")
-	   "* TODO  %?")
-	  ("n" "interesting things to find out" entry (file+headline "~/org/notes.org" "What to find out next")
-	   "* TODO  %?")
-	  ("q" "questions" entry (file+headline "~/org/notes.org" "Questions to ask")
-	   "* TODO  %?\n  %U\n  %a")
-	  ("r" "reminder" entry (file+headline "~/org/notes.org" "Reminder")
-	   "* TODO  %?\n  %U\n  %a")
-	  ("o" "other" plain (file+headline "~/org/notes.org" "Other")
-	   "%?\n")
-	  ("g" "go notes" entry (file+headline "~/org/notes.org" "Go notes")
-	   "*  %?\n  %U\n  %a")
-	  ("j" "journal" entry (file+datetree "~/org/journal.org")
-	   "*  %?\n %U\n  %a")))
+        '(("t" "Important Todo" entry (file+headline "~/org/notes.org" "Important Todos")
+           "* TODO  %?\n  %u\n")
+          ("w" "Website Todo" entry (file+headline "~/org/website.org" "What to work on next")
+           "* TODO  %?")
+          ("n" "Interesting thing to investigate" entry (file+headline "~/org/notes.org" "What to find out next")
+           "* TODO  %?")
+          ("r" "Reminder something to do" item (file+headline "~/org/notes.org" "Reminder")
+           "%u %? %a")
+          ("b" "Things to buy" item (file+headline "~/org/notes.org" "Buy")
+           "%? %u")
+          ("o" "Other" plain (file+headline "~/org/notes.org" "Other")
+           "%?\n")
+          ("g" "Go notes" entry (file+headline "~/org/notes.org" "Go notes")
+           "*  %?\n  %u\n  %a")
+          ("j" "Japanese Word" entry (file+headline "~/reading/skip/japanese.org" "Words")
+           "* <[%(garvin/japanese-prompt)]> :drill:
+:PROPERTIES:
+:DRILL_CARD_TYPE: twosided
+:END:
+** Word
+%(identity garvin/japanese-word)
+** Definition:
+%(garvin/japanese-get-definition (garvin/japanese-dict-find garvin/japanese-word))
+** Characters
+%(garvin/japanese-get-word garvin/japanese-word-dict)
+** Pronunciation
+%(garvin/japanese-get-pronunciation garvin/japanese-word-dict)
+")))
   (setq org-agenda-files (list "~/org/website.org"
 			       "~/org/other.org"
 			       "~/org/extensiontodos.org"
